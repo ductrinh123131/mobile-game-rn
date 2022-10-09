@@ -1,9 +1,11 @@
+import { Alert, Dimensions } from "react-native";
+
 export const MAX_PAIR = 6;
 export const CARD_STATES = {
-  DOWN: 'down',
-  UP: 'up',
-  RESOLVED: 'resolved',
-}
+  DOWN: "down",
+  UP: "up",
+  RESOLVED: "resolved",
+};
 
 export const creatEmptyMatrix = (rowsCount = 4, columnsCount = 3) => {
   const matrix = new Array(rowsCount).fill(null);
