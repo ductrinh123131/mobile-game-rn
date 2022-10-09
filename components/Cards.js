@@ -1,13 +1,9 @@
 import React, { useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 import { CARD_STATES } from "../utils";
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-} from "react-native";
+import { Text, TouchableOpacity, StyleSheet, Animated } from "react-native";
 
-const Card = ({ state, value, onPress, rowIdx, colIdx }) => {
+const Card = ({ testID, state, value, onPress, rowIdx, colIdx }) => {
   const flipAnimation = useRef(new Animated.Value(0)).current;
 
   const flipToFrontStyle = {
@@ -44,30 +40,38 @@ const Card = ({ state, value, onPress, rowIdx, colIdx }) => {
       toValue: 0,
       duration: 400,
       useNativeDriver: true,
-    }).start()
+    }).start();
   };
 
   const handleOnPress = () => {
-    onPress(rowIdx, colIdx)
-  }
+    onPress(rowIdx, colIdx);
+  };
 
   useEffect(() => {
     if (state === CARD_STATES.RESOLVED) {
-      flipToFront()
+      flipToFront();
     } else if (state === CARD_STATES.UP) {
-      flipToFront()
+      flipToFront();
     } else {
-      flipToBack()
+      flipToBack();
     }
-  }, [state])
-  
+  }, [state]);
+
   return (
-    <TouchableOpacity onPress={handleOnPress}>
-      <Animated.View style={{ ...styles.card, ...styles.back, ...flipToFrontStyle }}>
+    <TouchableOpacity
+      onPress={handleOnPress}
+      testID={testID}
+      accessibilityHint={state}
+    >
+      <Animated.View
+        style={{ ...styles.card, ...styles.back, ...flipToFrontStyle }}
+      >
         <Text style={styles.highlight}>?</Text>
       </Animated.View>
-      <Animated.View style={{ ...styles.card, ...styles.front, ...flipToBackStyle }}>
-        <Text style={styles.highlight}>{value}</Text>
+      <Animated.View style={{ ...styles.card, ...flipToBackStyle }}>
+        <Text style={styles.highlight}>
+          {value}
+        </Text>
       </Animated.View>
     </TouchableOpacity>
   );
@@ -94,7 +98,15 @@ const styles = StyleSheet.create({
   back: {
     position: "absolute",
   },
-  front: {},
 });
+
+Card.propTypes = {
+  testID: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  onPress: PropTypes.func.isRequired,
+  rowIdx: PropTypes.number.isRequired,
+  colIdx: PropTypes.number.isRequired,
+};
 
 export default Card;

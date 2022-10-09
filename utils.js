@@ -15,13 +15,14 @@ export const creatEmptyMatrix = (rowsCount = 4, columnsCount = 3) => {
 
 export const generateRandomMatrix = () => {
   const matrix = creatEmptyMatrix();
-  const list = [];
+  let list = [];
 
   // generate 6 unique values from 1 to 100
   while (list.length < MAX_PAIR) {
     const rand = Math.floor(Math.random() * 100 + 1);
-    if (list.indexOf(rand) < 0) list.push({ number: rand, count: 2 });
+    if (list.indexOf(rand) < 0) list.push(rand);
   }
+  list = list.map((item) => ({ number: item, count: 2 }));
 
   // for each cell in matrix, pick a pair from the 6 unique values above
   for (let r = 0; r < matrix.length; r++) {

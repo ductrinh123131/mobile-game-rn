@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   generateRandomMatrix,
   cloneMatrix,
@@ -112,6 +113,7 @@ const App = () => {
           {row.map((col, colIdx) => {
             return (
               <Card
+                testID="card"
                 key={colIdx}
                 state={col.state}
                 value={col.number}
@@ -138,7 +140,7 @@ const App = () => {
         <Text style={styles.restart} onPress={restart}>
           Restart
         </Text>
-        <Text style={styles.highlight}>Steps: {step} </Text>
+        <Text style={styles.highlight}>Steps: {step}</Text>
       </View>
       <View style={{ ...styles.backgroundColor, ...styles.center }}>
         <View style={styles.sectionContainer}>{renderRow()}</View>
