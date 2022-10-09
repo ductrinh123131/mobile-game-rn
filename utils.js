@@ -1,5 +1,3 @@
-import { Alert, Dimensions } from "react-native";
-
 export const MAX_PAIR = 6;
 export const CARD_STATES = {
   DOWN: "down",

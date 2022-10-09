@@ -1,9 +1,3 @@
-/**
- *
- * @format
- * @flow strict-local
- */
-
 import React, { useEffect, useState } from "react";
 import {
   generateRandomMatrix,
@@ -16,7 +10,6 @@ import Card from "./components/Cards";
 
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -25,7 +18,6 @@ import {
   Alert,
 } from "react-native";
 
-import { Colors } from "react-native/Libraries/NewAppScreen";
 let CARD_PAIRS_VALUE = generateRandomMatrix();
 
 const App = () => {
