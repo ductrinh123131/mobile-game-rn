@@ -108,13 +108,16 @@ const App = () => {
   const renderRow = () => {
     return matrix.map((row, rowIdx) => {
       return (
-        <View style={styles.row}>
+        <View style={styles.row} key={rowIdx}>
           {row.map((col, colIdx) => {
             return (
               <Card
+                key={colIdx}
                 state={col.state}
-                onPress={() => handlePress(rowIdx, colIdx)}
-                value={col.state !== CARD_STATES.DOWN ? col.number : "?"}
+                value={col.number}
+                onPress={handlePress}
+                rowIdx={rowIdx}
+                colIdx={colIdx}
               />
             );
           })}
@@ -131,13 +134,15 @@ const App = () => {
         barStyle={isDarkMode ? "light-content" : "dark-content"}
         backgroundColor={styles.backgroundColor}
       />
-        <View style={styles.textContainer}>
-          <Text style={styles.restart} onPress={restart}>Restart</Text>
-          <Text style={styles.highlight}>Steps: {step} </Text>
-        </View>
-        <View style={{...styles.backgroundColor, ...styles.center}}>
-          <View style={styles.sectionContainer}>{renderRow()}</View>
-        </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.restart} onPress={restart}>
+          Restart
+        </Text>
+        <Text style={styles.highlight}>Steps: {step} </Text>
+      </View>
+      <View style={{ ...styles.backgroundColor, ...styles.center }}>
+        <View style={styles.sectionContainer}>{renderRow()}</View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -145,13 +150,13 @@ const App = () => {
 const styles = StyleSheet.create({
   center: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   textContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   sectionContainer: {
     marginTop: 32,
@@ -164,19 +169,18 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: "700",
     fontSize: 30,
-    color: 'white',
+    color: "white",
   },
   restart: {
     fontWeight: "600",
-    color: '#147efb',
+    color: "#147efb",
     fontSize: 20,
   },
   row: {
-    padding: 10,
     flexDirection: "row",
   },
   backgroundStyle: {
-    backgroundColor: '#696969',
+    backgroundColor: "#696969",
     flex: 1,
   },
 });

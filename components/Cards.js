@@ -1,27 +1,74 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { CARD_STATES } from "../utils";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Animated,
+} from "react-native";
 
-const getCardStyles = (state) => {
-  return {
-    textDecorationLine:
-      state === CARD_STATES.RESOLVED ? "line-through" : "none",
-    borderWidth: 1,
-    borderColor: 'white',
-    backgroundColor: 'teal',
-    borderRadius: 6,
-    margin: 5,
-    width: 100,
-    height: 140,
-    justifyContent: "center",
-    alignItems: "center",
+const Card = ({ state, value, onPress, rowIdx, colIdx }) => {
+  const flipAnimation = useRef(new Animated.Value(0)).current;
+
+  const flipToFrontStyle = {
+    transform: [
+      {
+        rotateY: flipAnimation.interpolate({
+          inputRange: [0, 180],
+          outputRange: ["0deg", "180deg"],
+        }),
+      },
+    ],
   };
-};
+  const flipToBackStyle = {
+    transform: [
+      {
+        rotateY: flipAnimation.interpolate({
+          inputRange: [0, 180],
+          outputRange: ["180deg", "360deg"],
+        }),
+      },
+    ],
+  };
 
-const Card = ({ state, value, onPress }) => {
+  const flipToFront = () => {
+    Animated.timing(flipAnimation, {
+      toValue: 180,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const flipToBack = () => {
+    Animated.timing(flipAnimation, {
+      toValue: 0,
+      duration: 400,
+      useNativeDriver: true,
+    }).start()
+  };
+
+  const handleOnPress = () => {
+    onPress(rowIdx, colIdx)
+  }
+
+  useEffect(() => {
+    if (state === CARD_STATES.RESOLVED) {
+      flipToFront()
+    } else if (state === CARD_STATES.UP) {
+      flipToFront()
+    } else {
+      flipToBack()
+    }
+  }, [state])
+  
   return (
-    <TouchableOpacity style={getCardStyles(state)} onPress={onPress}>
-      <Text style={styles.highlight}>{value}</Text>
+    <TouchableOpacity onPress={handleOnPress}>
+      <Animated.View style={{ ...styles.card, ...styles.back, ...flipToFrontStyle }}>
+        <Text style={styles.highlight}>?</Text>
+      </Animated.View>
+      <Animated.View style={{ ...styles.card, ...styles.front, ...flipToBackStyle }}>
+        <Text style={styles.highlight}>{value}</Text>
+      </Animated.View>
     </TouchableOpacity>
   );
 };
@@ -30,8 +77,24 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: "700",
     fontSize: 40,
-    color: 'white',
+    color: "white",
   },
+  card: {
+    borderWidth: 1,
+    borderColor: "white",
+    backgroundColor: "teal",
+    borderRadius: 6,
+    margin: 5,
+    width: 100,
+    height: 120,
+    justifyContent: "center",
+    alignItems: "center",
+    backfaceVisibility: "hidden",
+  },
+  back: {
+    position: "absolute",
+  },
+  front: {},
 });
 
 export default Card;

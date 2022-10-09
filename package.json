@@ -5,8 +5,7 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "ios": "expo run:ios",
-    "ipad": "react-native run-ios --simulator \"iPad Air 2\"",
+    "ios": "react-native run-ios --udid 3673AC33-BDFA-4A25-9125-8B6E35FFC157",
     "web": "expo start --web"
   },
   "dependencies": {
